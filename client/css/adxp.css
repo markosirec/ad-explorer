@@ -1,12 +1,114 @@
-/* 
-    Document   : adxp.css
-    Created on : May 26, 2014, 2:30:00 AM
-    Author     : markosirec
-    Description:
-        Purpose of the stylesheet follows.
-*/
-
-root { 
-    display: block;
+/* Avenir */
+@font-face {
+    font-family: 'Avenir';
+    src: url(http://www.celtra.com/sites/default/themes/celtra/fonts/AvenirNextLTPro-Regular.woff);
+    font-weight: normal;
+}
+@font-face {
+    font-family: 'Avenir Medium';
+    src: url(http://www.celtra.com/sites/default/themes/celtra/fonts/AvenirNextLTPro-Medium.woff);
+    font-weight: normal;
+}
+@font-face {
+    font-family: 'Avenir Bold';
+    src: url(http://www.celtra.com/sites/default/themes/celtra/fonts/AvenirNextLTPro-Bold.woff);
+    font-weight: normal;
 }
 
+@font-face {
+    font-family: 'Avenir Light';
+    src: url(http://www.celtra.com/sites/default/themes/celtra/fonts/AvenirNextLTPro-Light.woff);
+    font-weight: normal;
+}
+
+
+html, body {
+    margin: 0;
+    padding: 0;
+    border: 0;
+}
+
+body {
+    font-family: 'Avenir', 'Arial', sans-serif;
+}
+
+.clear {
+    clear: both;
+}
+
+#items-template {
+    display: none;
+}
+
+#header {
+    z-index: 5000;
+    height: 100px;
+    width: 100%;
+    overflow: hidden;
+    position: fixed;
+    top: 0px;
+    left: 0px;
+    background-color: #f4f6f7;
+    box-shadow: 0px 0px 10px #cbcbcb;
+    font-size: 2em;
+    color: #999999;
+}
+
+#header div {
+    margin: 34px 20px 0 20px;
+    -webkit-tap-highlight-color: rgba(0,0,0,0);
+    pointer-events: all; /* capture on click events */
+    -webkit-tap-highlight-color: rgba(0,0,0,0); /* prevent tap highlight on phones */
+}
+
+#header div:active {
+    color: #745bb5;
+}
+
+#back-button {
+    float: left;
+}
+
+#refresh-button {
+    float: right;
+}
+
+#items {
+    list-style-type:none;
+    padding: 100px 0 0 0;
+    margin: 0;
+}
+
+#items li {
+    background: #d9dadc;
+    background: -webkit-gradient(linear, left top, right bottom, from(#725dba), to(#87509a)); /* for webkit browsers */
+    background: -moz-linear-gradient(top,  #ee63a4,  #cc558e); /* for firefox 3.6+ */
+    padding: 30px 20px 24px 20px;
+    border-bottom: 1px solid #C1BBCE;
+    color: #EEEEEE;
+    font-weight: bold;
+}
+
+#items .icon {
+    width: 50px;
+    height: 50px;
+    background-color: #ffffff;
+    background-image: linear-gradient(#ffffff,#ffffff 2%,#e7edf3);
+    -webkit-mask-size: 50px;
+    float: left;
+    margin-right: 20px;
+}
+
+#items .title {
+    float: left;
+    margin-top: 10px;
+    font-size: 1.8em;
+}
+
+#items .last-update {
+    float: right;
+    font-size: 0.8em;
+    margin-top: 10px;
+    text-align: right;
+    color: #D3D0D0;
+}

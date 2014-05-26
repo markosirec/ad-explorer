@@ -6,7 +6,7 @@ var ADXP = {};
 ADXP.config = {
     base_url: "/",
     response_format: "json",
-    date_format: "%m.%d.%Y %H:%i"
+    date_format: "%m/%d/%Y %H:%i"
 };
 
 
