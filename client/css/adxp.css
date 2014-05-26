@@ -4,20 +4,10 @@
     src: url(http://www.celtra.com/sites/default/themes/celtra/fonts/AvenirNextLTPro-Regular.woff);
     font-weight: normal;
 }
-@font-face {
-    font-family: 'Avenir Medium';
-    src: url(http://www.celtra.com/sites/default/themes/celtra/fonts/AvenirNextLTPro-Medium.woff);
-    font-weight: normal;
-}
+
 @font-face {
     font-family: 'Avenir Bold';
     src: url(http://www.celtra.com/sites/default/themes/celtra/fonts/AvenirNextLTPro-Bold.woff);
-    font-weight: normal;
-}
-
-@font-face {
-    font-family: 'Avenir Light';
-    src: url(http://www.celtra.com/sites/default/themes/celtra/fonts/AvenirNextLTPro-Light.woff);
     font-weight: normal;
 }
 
@@ -30,7 +20,7 @@ html, body {
 }
 
 body {
-    font-family: 'Avenir', 'Arial', sans-serif;
+    font-family: 'Arial', sans-serif;
 }
 
 .clear {
@@ -55,24 +45,29 @@ body {
 }
 
 #header a {
-    padding: 23px 20px 20px 20px;
     -webkit-tap-highlight-color: rgba(0,0,0,0);
-    -webkit-tap-highlight-color: transparent; /* For some Androids */
     display: block;
     text-decoration: none;
-    color: #999999;
-    z-index: 1;
 }
 
 #header a:active {
     -webkit-transform: scale3d(0.8, 0.8, 1);
 }
 
-#header #refresh-button {
+#refresh-button {
     padding: 23px 20px 20px 20px;
     margin: 14px;
     -webkit-mask-size: 40px;
-    background-color: #999999;
+    background: url('../images/refresh.png') no-repeat top left;
+}
+
+#back-button {
+    padding: 23px 20px 17px 20px;
+    width: 40px;
+    height: 40px;
+    margin: 14px;
+    
+
 }
 
 #back-button {
@@ -108,16 +103,28 @@ body {
     margin-right: 20px;
 }
 
-#items .title {
+#items .file .title {
     font-size: 1.8em;
 }
 
-#items .last-update {
+#items .small-text {
     font-size: 0.8em;
     color: #D3D0D0;
 }
 
+#items .folder .title {
+    font-size: 2.4em;
+    margin-top: 14px;
+}
 
 #items .holder {
     float: left;
+}
+
+#items .folder .icon {
+    -webkit-mask-image: url('../images/folder50.png');
+}
+
+#items .file .icon {
+    -webkit-mask-image: url('../images/document28.png');
 }
