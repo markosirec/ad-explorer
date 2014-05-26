@@ -67,7 +67,12 @@ class Items extends REST_Controller {
         }
 
         // get the data from the DB
-        $result = $this->Items_mdl->getItemsByParentId($parent_id, $this->get("order_by"), $this->get("order_direction"));
+        $result = $this->Items_mdl->getItemsByParentId(
+            $parent_id, 
+            $this->get("order_by"), 
+            $this->get("order_direction"), 
+            $this->get("date_format"));
+        
         $this->_check_query_for_errors($this->db->_error_number());
         
         // output the data
@@ -91,9 +96,9 @@ class Items extends REST_Controller {
             return;
         }
         
-        $result = $this->Items_mdl->getItemById($parent_id);
+        $result = $this->Items_mdl->getItemById($item_id, $this->get("date_format"));
         $this->_check_query_for_errors($this->db->_error_number());
-        var_dump($result);
+        
         $result = $result->result_array();
         
         if (count($result) == 0) {
