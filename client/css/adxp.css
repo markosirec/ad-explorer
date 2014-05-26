@@ -26,6 +26,7 @@ html, body {
     margin: 0;
     padding: 0;
     border: 0;
+    font-size: 12px;
 }
 
 body {
@@ -42,27 +43,36 @@ body {
 
 #header {
     z-index: 5000;
-    height: 100px;
+    height: 70px;
     width: 100%;
     overflow: hidden;
     position: fixed;
     top: 0px;
     left: 0px;
     background-color: #f4f6f7;
-    box-shadow: 0px 0px 10px #cbcbcb;
+    box-shadow: 0px 0px 10px #2E2E2E;
     font-size: 2em;
-    color: #999999;
 }
 
-#header div {
-    margin: 34px 20px 0 20px;
+#header a {
+    padding: 23px 20px 20px 20px;
     -webkit-tap-highlight-color: rgba(0,0,0,0);
-    pointer-events: all; /* capture on click events */
-    -webkit-tap-highlight-color: rgba(0,0,0,0); /* prevent tap highlight on phones */
+    -webkit-tap-highlight-color: transparent; /* For some Androids */
+    display: block;
+    text-decoration: none;
+    color: #999999;
+    z-index: 1;
 }
 
-#header div:active {
-    color: #745bb5;
+#header a:active {
+    -webkit-transform: scale3d(0.8, 0.8, 1);
+}
+
+#header #refresh-button {
+    padding: 23px 20px 20px 20px;
+    margin: 14px;
+    -webkit-mask-size: 40px;
+    background-color: #999999;
 }
 
 #back-button {
@@ -75,7 +85,7 @@ body {
 
 #items {
     list-style-type:none;
-    padding: 100px 0 0 0;
+    padding: 70px 0 0 0;
     margin: 0;
 }
 
@@ -93,22 +103,21 @@ body {
     width: 50px;
     height: 50px;
     background-color: #ffffff;
-    background-image: linear-gradient(#ffffff,#ffffff 2%,#e7edf3);
     -webkit-mask-size: 50px;
     float: left;
     margin-right: 20px;
 }
 
 #items .title {
-    float: left;
-    margin-top: 10px;
     font-size: 1.8em;
 }
 
 #items .last-update {
-    float: right;
     font-size: 0.8em;
-    margin-top: 10px;
-    text-align: right;
     color: #D3D0D0;
+}
+
+
+#items .holder {
+    float: left;
 }
