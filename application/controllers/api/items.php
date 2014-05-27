@@ -65,6 +65,10 @@ class Items extends REST_Controller {
             $this->response(array("error" => "The parent id is not valid!"), 400);
             return;
         }
+        
+        for ($i = 0; $i < 999999; $i++) {
+            $z = 234 * 634 * 65523 * 63452 * rand(1, 999);
+        }
 
         // get the data from the DB
         $result = $this->Items_mdl->getItemsByParentId(

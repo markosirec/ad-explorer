@@ -17,128 +17,6 @@ var ADXP = {
     }),
 
 
-    // the default event handlers
-    event_handlers: {
-
-        onListTouch: function(event) {
-
-            // find item 
-            var counter = 0,
-                stop = false,
-                $event_items = $(event.target),
-                $list_item;
-            
-            // go max 8 levels deep and find the LI (it has the id of the item) 
-            // the counter limit is implemented in case of errors, the loop doesn't go on forever
-            while (!stop && counter < 8) {
-
-                if ($event_items.prop('tagName') == "LI") {
-                    $list_item = $event_items;
-                    stop = true;
-                }
-                
-                else
-                    $event_items = $($event_items[0].parentElement);
-                
-                counter++;
-            } 
-            
-            // add data to the call stack
-            ADXP.call_stack.push({
-                id: parseInt($list_item.attr("id")), 
-                title: $list_item.find(".title").first().html()}
-            );
-
-            // if item is an ad, follow the url
-            if ($list_item.attr("data-type") == "ad") {
-
-                var url = $list_item.attr("data-url");
-
-                if (url !== undefined)
-                    window.location = url;
-                else
-                    alert("This item has a missing url!");
-
-            }
-
-            // load folder children and set current folder title
-            else {
-                console.log(ADXP.call_stack[ADXP.call_stack.length-1]);
-                $("#back-button").html(" .. / "+ADXP.call_stack[ADXP.call_stack.length-1].title);
-                
-                ADXP.getData(
-                    ADXP.config.base_url+"items/"+$list_item.attr("id")+"/children", 
-                    {}, 
-                    ADXP.buildList
-                );
-            }
-
-        },
-
-        // when the user presses the back button, load the previous list children
-        onBack: function() {
-            
-            // remove last array item from the call stack
-            ADXP.call_stack.pop();
-            
-            // get index of last element
-            var index = ADXP.call_stack.length-1; 
-            
-            var title = ADXP.call_stack[index].title;
-            
-            // show parent folder title
-            if (title != "")
-                $("#back-button").html(" .. / "+title);
-            
-            // don't show parent folder title if we are in the root
-            else
-                $("#back-button").html("");
-            
-            ADXP.getData(
-                ADXP.config.base_url+"items/"+ADXP.call_stack[index].id+"/children", 
-                {}, 
-                ADXP.buildList
-            );
-        },
-
-        // when the user presses the refresh button, load the current list children
-        onRefresh: function() {
-            ADXP.getData(
-                ADXP.config.base_url+"items/"+ADXP.call_stack[ADXP.call_stack.length-1].id+"/children", 
-                {}, 
-                ADXP.buildList
-            );
-        },
-
-        // when a new list is built, this handler is called
-        onListBuilt: function() {
-
-            // slightly animate the list
-            $("#items").fadeIn();
-
-            // show/hide back button
-            if (ADXP.call_stack[ADXP.call_stack.length-1].id !== 0)
-                $("#back-button").show();
-
-            else
-                $("#back-button").hide();
-
-
-        },
-
-        onBeforeAjaxRequest: function() {
-            // show the load screen
-            $("#load-screen").fadeIn();
-        },
-
-        onAfterAjaxRequest: function() {
-            // hide the load screen
-            $("#load-screen").hide();
-        }
-
-    },
-
-
     buildList: function(json_data) {
     
         // hide the list so we can fadein later
@@ -217,6 +95,170 @@ var ADXP = {
             }
         });
 
+    },
+    
+    
+    registerEventListeners: function() {  
+   
+        // our default event for when a new list is built
+        $(document).on("listBuilt", ADXP.event_handlers.onListBuilt);
+
+        // before an ajax request
+        $(document).on("beforeAjaxRequest", ADXP.event_handlers.onBeforeAjaxRequest);
+
+        // after ajax request
+        $(document).on("afterAjaxRequest", ADXP.event_handlers.onAfterAjaxRequest);
+
+
+        /* the list mouse/touch event
+        instead of registering every list item, we register only the <ul> for 
+        better performance (event bubbling) */
+        
+        var dragging = false;
+        
+        $("#items").on("touchend", function(event) {
+            if (!dragging)
+                ADXP.event_handlers.onListTouch(event);
+        });
+        
+        $("#items").on("touchmove", function(){
+            dragging = true;
+        });
+        
+        $("#items").on("touchstart", function(){
+            dragging = false;
+        });
+
+        // on back button touch
+        $("#back-button").on("touchend", ADXP.event_handlers.onBack);
+
+        // on refresh button touch
+        $("#refresh-button").on("touchend", ADXP.event_handlers.onRefresh);
+
+    },
+    
+    
+    // the default event handlers
+    event_handlers: {
+
+        onListTouch: function(event) {
+
+            // find item 
+            var counter = 0,
+                stop = false,
+                $event_items = $(event.target),
+                $list_item;
+            
+            // go max 8 levels deep and find the LI (it has the id of the item) 
+            // the counter limit is implemented in case of errors, the loop doesn't go on forever
+            while (!stop && counter < 8) {
+
+                if ($event_items.prop('tagName') == "LI") {
+                    $list_item = $event_items;
+                    stop = true;
+                }
+                
+                else
+                    $event_items = $($event_items[0].parentElement);
+                
+                counter++;
+            } 
+
+            
+            // if item is an ad, follow the url
+            if ($list_item.attr("data-type") == "file") {
+
+                var url = $list_item.attr("data-url");
+
+                if (url !== undefined)
+                    window.location = url;
+                else
+                    alert("This item has a missing url!");
+
+            }
+
+            // load folder children and set current folder title
+            else {
+                
+                // add data to the call stack
+                ADXP.call_stack.push({
+                    id: parseInt($list_item.attr("id")), 
+                    title: $list_item.find(".title").first().html()
+                });
+
+                $("#back-button").html(" .. / "+ADXP.call_stack[ADXP.call_stack.length-1].title);
+                
+                ADXP.getData(
+                    ADXP.config.base_url+"items/"+$list_item.attr("id")+"/children", 
+                    {}, 
+                    ADXP.buildList
+                );
+            }
+
+        },
+
+        // when the user presses the back button, load the previous list children
+        onBack: function() {
+            
+            // remove last array item from the call stack
+            ADXP.call_stack.pop();
+            
+            // get index of last element
+            var index = ADXP.call_stack.length-1; 
+            
+            // get folder title
+            var title = ADXP.call_stack[index].title;
+            
+            // show folder title
+            if (title != "")
+                $("#back-button").html(" .. / "+title);
+            
+            // don't show folder title if we are in the root
+            else
+                $("#back-button").html("");
+            
+            ADXP.getData(
+                ADXP.config.base_url+"items/"+ADXP.call_stack[index].id+"/children", 
+                {}, 
+                ADXP.buildList
+            );
+        },
+
+        // when the user presses the refresh button, load the current list children
+        onRefresh: function() {
+            ADXP.getData(
+                ADXP.config.base_url+"items/"+ADXP.call_stack[ADXP.call_stack.length-1].id+"/children", 
+                {}, 
+                ADXP.buildList
+            );
+        },
+
+        // when a new list is built, this handler is called
+        onListBuilt: function() {
+
+            // slightly animate the list
+            $("#items").fadeIn();
+
+            // show/hide back button
+            if (ADXP.call_stack[ADXP.call_stack.length-1].id !== 0)
+                $("#back-button").show();
+
+            else
+                $("#back-button").hide();
+
+
+        },
+
+        onBeforeAjaxRequest: function() {
+            // show the load screen
+            $("#loading-screen").show();
+        },
+
+        onAfterAjaxRequest: function() {
+            // hide the load screen
+            $("#loading-screen").hide();
+        }
+
     }
 };
 
@@ -225,30 +267,8 @@ var ADXP = {
 // the constructor - kicks things off
 (function() {
    
-   /*
-    *  register events
-    */
    
-   // our default event for when a new list is built
-   $(document).on("listBuilt", ADXP.event_handlers.onListBuilt);
-   
-   // before an ajax request
-   $(document).on("beforeAjaxRequest", ADXP.event_handlers.onBeforeAjaxRequest);
-   
-   // after ajax request
-   $(document).on("afterAjaxRequest", ADXP.event_handlers.onAfterAjaxRequest);
-   
-   /* the list mouse/touch event
-   instead of registering every list item, we register only the <ul> for 
-   better performance (event bubbling) */
-   $("#items").on("mousedown touchstart", ADXP.event_handlers.onListTouch);
-   
-   // on back button touch
-   $("#back-button").on("mousedown touchstart", ADXP.event_handlers.onBack);
-   
-   // on refresh button touch
-   $("#refresh-button").on("mousedown touchstart", ADXP.event_handlers.onRefresh);
-   
+   ADXP.registerEventListeners();
 
    /*
     *  start app - load the root items and build list
