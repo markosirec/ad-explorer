@@ -1,6 +1,6 @@
 <?php if ( ! defined('BASEPATH')) exit('No direct script access allowed');
 
-require APPPATH.'/libraries/REST_Controller.php';
+
 
 /**
 * 
@@ -15,7 +15,9 @@ require APPPATH.'/libraries/REST_Controller.php';
 * @author Marko Širec
 */
 
-class Items extends REST_Controller {
+require APPPATH.'/core/MY_REST_Controller.php';
+
+class Items extends MY_REST_Controller {
 
     public function __construct() {
         
@@ -65,10 +67,6 @@ class Items extends REST_Controller {
             $this->response(array("error" => "The parent id is not valid!"), 400);
             return;
         }
-        
-        for ($i = 0; $i < 999999; $i++) {
-            $z = 234 * 634 * 65523 * 63452 * rand(1, 999);
-        }
 
         // get the data from the DB
         $result = $this->Items_mdl->getItemsByParentId(
@@ -76,8 +74,8 @@ class Items extends REST_Controller {
             $this->get("order_by"), 
             $this->get("order_direction"), 
             $this->get("date_format"));
-        
-        $this->_check_query_for_errors($this->db->_error_number());
+
+        $this->checkQueryForErrors($this->db->_error_number());
         
         // output the data
         $this->response($result->result_array(), 200);
@@ -101,7 +99,7 @@ class Items extends REST_Controller {
         }
         
         $result = $this->Items_mdl->getItemById($item_id, $this->get("date_format"));
-        $this->_check_query_for_errors($this->db->_error_number());
+        $this->checkQueryForErrors($this->db->_error_number());
         
         $result = $result->result_array();
         

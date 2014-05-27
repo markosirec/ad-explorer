@@ -1,8 +1,7 @@
-
-// create the app namespace/object
+// create the app namespace/main object
 var ADXP = {
 
-    // config object - here we could also store the urls for the ajax requests if needed
+    // config object - here we could also store the urls for the ajax requests if needed, etc.
     config: {
         base_url: "/api/",
         response_format: "json",
@@ -10,13 +9,14 @@ var ADXP = {
     },
 
 
-    // holds the data for the current state
+    // holds the data for the current state (back button functionality)
     call_stack: new Array({
         id: 0,
         title: ""
     }),
 
 
+    // builds the <li> items in the <ul>
     buildList: function(json_data) {
     
         // hide the list so we can fadein later
@@ -69,7 +69,6 @@ var ADXP = {
         data.format = (data.format !== undefined ? data.format : ADXP.config.response_format);
         data.date_format = (data.date_format !== undefined ? data.date_format : ADXP.config.date_format);
 
-
         $.ajax({
             url: url,
             type: "GET",
@@ -90,14 +89,28 @@ var ADXP = {
             },
 
             error: function(xhr, status, error_thrown) {
+                
                 $.event.trigger("afterAjaxRequest");
-                alert(error_thrown);
+                
+                try {
+                    
+                    var error_text = $.parseJSON(xhr.responseText);
+                    if (error_text.error !== undefined)
+                        alert(error_text.error);
+                    else
+                        alert(error_thrown);
+                }
+                
+                catch(e) {
+                    alert(error_thrown);
+                }
+
             }
         });
 
     },
     
-    
+
     registerEventListeners: function() {  
    
         // our default event for when a new list is built
@@ -112,8 +125,9 @@ var ADXP = {
 
         /* the list mouse/touch event
         instead of registering every list item, we register only the <ul> for 
-        better performance (event bubbling) */
+        better performance (event delegation) */
         
+        // also check for dragging/scrolling. in this case stop the event
         var dragging = false;
         
         $("#items").on("touchend", function(event) {
@@ -263,17 +277,12 @@ var ADXP = {
 };
 
 
-
-// the constructor - kicks things off
+// yeah baby, let's kick things off
 (function() {
-   
    
    ADXP.registerEventListeners();
 
-   /*
-    *  start app - load the root items and build list
-    */
-
+   //start app - load the root items and build list
    ADXP.getData(ADXP.config.base_url+"items/0/children", {}, ADXP.buildList);
    
 })();

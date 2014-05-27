@@ -342,12 +342,6 @@ abstract class REST_Controller extends CI_Controller
      * @param array  $arguments     The arguments passed to the controller method.
      * @author Chris Kacerguis
      * 
-     * -----------
-     * 
-     * Small change made to the format of the controller method so it corresponds to our 
-     * coding style.
-     * 
-     * @author Marko Širec
      * 
      */
     public function _remap($object_called, $arguments)
@@ -357,48 +351,14 @@ abstract class REST_Controller extends CI_Controller
             $this->response(array('status' => false, 'error' => 'Unsupported protocol'), 403);
         }
 
-        /* Original library code - tries to map an url to an arbitrary array, with a function call in the beginning.
-         * For example this style of urls is valid:
-         * /items/item/id/5 -> calls the method item_get(5)
-         * 
-         * We chose not to follow such a verbose style (check the docs), so let's comment out this functionality.
-         * 
-         */
-        
-        /*
         $pattern = '/^(.*)\.('.implode('|', array_keys($this->_supported_formats)).')$/';
 
         if (preg_match($pattern, $object_called, $matches)) {
             $object_called = $matches[1];
-        } */
+        } 
 
-        
-        
-        /*
-         * NEW solution:
-         * 
-         * everything in the url is put into the arguments array, and a default method is called:
-         * methodAction. for example: Items->getAction, for the url items/5. The number 5 is added to the beginning
-         * of the arguments array.
-         * 
-         * (by Marko Širec)
-         */
-        
-        array_unshift($arguments, $object_called);
-        $object_called = "Action";
-        
-        
-        /*
-         * Another change, purely cosmetic - since we write methods in camel case in our own code, change the call so it corresponds
-         * to this style.
-         * 
-         * (by Marko Širec)
-         */
-        //$controller_method = $object_called.'_'.$this->request->method;
-        $controller_method = $this->request->method.$object_called;
+        $controller_method = $object_called.'_'.$this->request->method;
 
-        
-        
         // Do we want to log this method (if allowed by config)?
         $log_method = !(isset($this->methods[$controller_method]['log']) and $this->methods[$controller_method]['log'] == false);
 
@@ -1526,21 +1486,6 @@ abstract class REST_Controller extends CI_Controller
 
         return false;
     }
-    
-    
-    /**
-     * Check to see if the there is a DB error - output the error no. and end
-     * 
-     * @author Marko Širec
-     * @param integer $error
-     */
-    protected function _check_query_for_errors($error) {
-        
-        if ($error > 0) {
-            $this->response(array("error" => "Database error: ".$error), 400);
-            exit();
-        }
 
-    }
 
 }

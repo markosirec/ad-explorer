@@ -36,29 +36,35 @@ body {
 
 #refresh-button {
     padding: 20px 30px 20px 20px;
+    float: right;
     
     /* use a background image instead of a webkit mask because android has a bug
-    when showing masks in a fixed container. bummer ;( */
+    when showing masks in a fixed container. bummer ;( the masks look so much better... */
     background: url('../images/refresh.png') no-repeat center center;
 }
 
-#back-button {
-    padding: 11px 30px 10px 30px;
+#back-button { 
+    padding: 12px 0px 10px 24px;
     background: url('../images/back.png') no-repeat left center;
-    font-size: 0.5em;
+    font-size: 0.4em;
     color: #999999;
     margin-left: 14px;
     margin-top: 3px;
-    min-height: 15px;
-}
-
-#back-button {
+    min-height: 13px;
     float: left;
     display: none;
+    max-width: 110px;
 }
 
-#refresh-button {
-    float: right;
+#logo {
+    position: absolute;
+    left: 50%;
+    margin-left: -26px;
+    width: 52px;
+    margin-top: 12px;
+    color: #999999;
+    font-size: 0.6em;
+    letter-spacing: 4px;
 }
 
 #items {
@@ -69,10 +75,9 @@ body {
 }
 
 #items li {
-    
     padding: 25px 20px 24px 20px;
     border-bottom: 2px solid #C1BBCE;
-    color: #EEEEEE;
+    color: #eeeeee;
     font-weight: bold;
 }
 
@@ -86,7 +91,6 @@ body {
     background: -webkit-gradient(linear, left top, right bottom, from(#725dba), to(#87509a));
 }
     
-
 #items .icon {
     width: 50px;
     height: 50px;
@@ -100,7 +104,7 @@ body {
     font-size: 1.8em;
 }
 
-#items .small-text {
+#items .file .small-text {
     font-size: 0.8em;
     color: #D3D0D0;
 }
@@ -110,8 +114,9 @@ body {
     margin-top: 14px;
 }
 
-#items .holder {
+#items .file .holder {
     float: left;
+    max-width: 200px;
 }
 
 #items .folder .icon {
@@ -122,7 +127,6 @@ body {
     -webkit-mask-image: url('../images/document28.png');
 }
 
-
 #loading-screen {
     position: fixed;
     width: 100%;
@@ -132,7 +136,6 @@ body {
     z-index: 500;
 }
 
-
 #loading-screen div {
     background-color: #dddddd;
     border-radius: 5px;
@@ -140,7 +143,6 @@ body {
     font-size: 2em;
     line-height: 100px;
     opacity: 0.5;
-    
     position: absolute;
     top: 50%;
     left: 50%;
