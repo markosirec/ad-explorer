@@ -8,11 +8,17 @@
     </head>
     <body>
         <div id="header">
-            <a href="#" id="back-button"></a>
-            <a href="#" id="refresh-button"></a>
+            <div id="back-button"> .. / Nike ads /</div>
+            <div id="refresh-button"></div>
         </div>
         
         <ul id="items">
+            
+
+        </ul>
+        
+        <ul id="items-template">
+            
             <li class="folder">
                 <div class="icon"></div>
                 <div class="holder">
@@ -25,19 +31,27 @@
                 <div class="icon"></div>
                 <div class="holder">
                     <div class="title">800x400</div>
-                    <div class="small-text">Web banner<br>12/5/2004</div>
+                    <div class="small-text">
+                        <div class="format"></div>
+                        <div class="date">12/5/2004
+                    </div>  
+                    </div>
                 </div>
                 <div class="clear"></div>
             </li>
-
-        </ul>
-        
-        <ul id="items-template">
-            <li data-id="" data-type="" data-url="">
+            
+            <!--<li data-id="" data-type="" data-url="">
                 <img class="list-icon" src="data:image/gif;base64,R0lGODlhAQABAAAAACH5BAEKAAEALAAAAAABAAEAAAICTAEAOw==" data-src="./images/icon_{type}.png">
                 <div class="title"></div>
                 <div class="last-update"></div>
-            </li>
+            </li> -->
         </ul>
+        
+        <div id="loading-screen">
+            Loading ...
+        </div>
+        
+        <script src="./js/jquery-2.1.1.min.js"></script>
+        <script src="./js/adxp.js"></script>
     </body>
 </html>

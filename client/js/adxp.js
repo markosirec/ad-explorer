@@ -1,167 +1,226 @@
 
 // create the app namespace/object
-var ADXP = {};
+var ADXP = {
 
-// config object - here we could also store the urls for the ajax requests if needed
-ADXP.config = {
-    base_url: "/",
-    response_format: "json",
-    date_format: "%m/%d/%Y %H:%i"
-};
-
-
-// holds the data for the current state
-ADXP.data = {
-    current_parent_id: 0,
-    previous_parent_id: null
-};
-
-
-// the default event handlers
-ADXP.event_handlers = {
-    
-    onListTouch: function(event) {
-        
-        ADXP.data.previous_parent_id = ADXP.data.current_parent_id;
-        
-        // get item 
-        var $list_item = $(event.targetChildren[0]); // ??
-        
-        // save current parent id for future reference
-        ADXP.data.current_parent_id = parseInt($list_item.attribute("data-id"));
-
-        // if item is an ad, follow the url
-        if ($list_item.attribute("data-type") == "ad") {
-            
-            var url = $list_item.attribute("data-url");
-            
-            if (url !== undefined)
-                window.location = url;
-            else
-                alert("This item has a missing url!");
-            
-        }
-        
-        // else if item type is a folder, show folder children
-        else
-            ADXP.getData(ADXP.config.base_url+"items/"+ADXP.data.current_parent_id+"/children", {}, ADXP.buildList);
-        
+    // config object - here we could also store the urls for the ajax requests if needed
+    config: {
+        base_url: "/api/",
+        response_format: "json",
+        date_format: "%m/%d/%Y %H:%i"
     },
-    
-    // when the user presses the back button, load the previous list children
-    onBack: function() {
-        ADXP.getData(ADXP.config.base_url+"items/"+ADXP.data.previous_parent_id+"/children", {}, ADXP.buildList);
-    },
-    
-    // when the user presses the refresh button, load the current list children
-    onRefresh: function() {
-        ADXP.getData(ADXP.config.base_url+"items/"+ADXP.data.current_parent_id+"/children", {}, ADXP.buildList);
-    },
-    
-    // when a new list is built, this handler is called
-    onListBuilt: function() {
-        
-        // slightly animate the list
-        $("#items").fadeIn();
-
-        // show/hide back button
-        if (ADXP.data.current_parent_id !== 0)
-            $("#back-button").show();
-        
-        else if (ADXP.data.current_parent_id === 0)
-            $("#back-button").hide();
-        
-        
-    },
-    
-    onBeforeAjaxRequest: function() {
-        // show the load screen
-        $("#load-screen").fadeIn();
-    },
-    
-    onAfterAjaxRequest: function() {
-        // hide the load screen
-        $("#load-screen").hide();
-    }
-    
-    
-};
 
 
-ADXP.buildList = function(json_data) {
-    
-    // hide the list so we can fadein later
-    $("#items").hide();
-    
-    // clear the old list
-    $("#items").remove("li");
-    
-    // get item template so we have to acces it only once, saving on time
-    var item_template = $("#items-template").children(":first");
-    
-    for (var i = 0; i <= json_data.length; i++) {
-        
-        // generate new item from template
-        var new_item = item_template.clone();
-        $(new_item).attribute("data-id", json_data[i].item_id);
-        $(new_item).attribute("data-type", json_data[i].type);
-        $(new_item).attribute("data-url", json_data[i].url);
-        
-        // set up icon
-        var icon = $(new_item).find(".list-icon");
-        icon.attribute("src", icon.attribute("data-src").replace("{type}", json_data[i].type));
-        
-        $(new_item).find(".title").html(json_data[i].title);
-        $(new_item).find(".last-update").html(json_data[i].last_update_formated);
-        
-        $("#items").append(new_item);
-        
-    }
-    
-    // fire the event, signaling the build process is done
-    $.event.trigger("listBuilt");
-    
-}
+    // holds the data for the current state
+    call_stack: new Array({
+        id: 0,
+        title: ""
+    }),
 
 
+    // the default event handlers
+    event_handlers: {
 
-// wrapper function for ajax GET requests
-ADXP.getData = function(url, data, successCallback, errorCallback) {
-    
-    $.event.trigger("beforeAjaxRequest");
-    
-    // set the default format
-    data.format = (data.format !== undefined ? data.format : ADXP.config.response_format);
-    data.date_format = (data.date_format !== undefined ? data.date_format : ADXP.config.date_format);
+        onListTouch: function(event) {
 
-    $.ajax({
-        url: url,
-        type: "GET",
-        data: data,
-        success: function(data) {
+            // find item 
+            var counter = 0,
+                stop = false,
+                $event_items = $(event.target),
+                $list_item;
             
-            $.event.trigger("afterAjaxRequest");
+            // go max 8 levels deep and find the LI (it has the id of the item) 
+            // the counter limit is implemented in case of errors, the loop doesn't go on forever
+            while (!stop && counter < 8) {
+
+                if ($event_items.prop('tagName') == "LI") {
+                    $list_item = $event_items;
+                    stop = true;
+                }
+                
+                else
+                    $event_items = $($event_items[0].parentElement);
+                
+                counter++;
+            } 
             
-            var response = $.parseJSON(data);
-            
-            if (response.error !== undefined && errorCallback !== undefined)
-                errorCallback(response);
-            
-            else if (response.error !== undefined)
-                alert(response.error);
-            
-            else if (successCallback !== undefined)
-                successCallback(response);
+            // add data to the call stack
+            ADXP.call_stack.push({
+                id: parseInt($list_item.attr("id")), 
+                title: $list_item.find(".title").first().html()}
+            );
+
+            // if item is an ad, follow the url
+            if ($list_item.attr("data-type") == "ad") {
+
+                var url = $list_item.attr("data-url");
+
+                if (url !== undefined)
+                    window.location = url;
+                else
+                    alert("This item has a missing url!");
+
+            }
+
+            // load folder children and set current folder title
+            else {
+                console.log(ADXP.call_stack[ADXP.call_stack.length-1]);
+                $("#back-button").html(" .. / "+ADXP.call_stack[ADXP.call_stack.length-1].title);
+                
+                ADXP.getData(
+                    ADXP.config.base_url+"items/"+$list_item.attr("id")+"/children", 
+                    {}, 
+                    ADXP.buildList
+                );
+            }
 
         },
-        
-        error: function(xhr, status, error_thrown) {
-            $.event.trigger("afterAjaxRequest");
-            alert(error_thrown);
+
+        // when the user presses the back button, load the previous list children
+        onBack: function() {
+            
+            // remove last array item from the call stack
+            ADXP.call_stack.pop();
+            
+            // get index of last element
+            var index = ADXP.call_stack.length-1; 
+            
+            var title = ADXP.call_stack[index].title;
+            
+            // show parent folder title
+            if (title != "")
+                $("#back-button").html(" .. / "+title);
+            
+            // don't show parent folder title if we are in the root
+            else
+                $("#back-button").html("");
+            
+            ADXP.getData(
+                ADXP.config.base_url+"items/"+ADXP.call_stack[index].id+"/children", 
+                {}, 
+                ADXP.buildList
+            );
+        },
+
+        // when the user presses the refresh button, load the current list children
+        onRefresh: function() {
+            ADXP.getData(
+                ADXP.config.base_url+"items/"+ADXP.call_stack[ADXP.call_stack.length-1].id+"/children", 
+                {}, 
+                ADXP.buildList
+            );
+        },
+
+        // when a new list is built, this handler is called
+        onListBuilt: function() {
+
+            // slightly animate the list
+            $("#items").fadeIn();
+
+            // show/hide back button
+            if (ADXP.call_stack[ADXP.call_stack.length-1].id !== 0)
+                $("#back-button").show();
+
+            else
+                $("#back-button").hide();
+
+
+        },
+
+        onBeforeAjaxRequest: function() {
+            // show the load screen
+            $("#load-screen").fadeIn();
+        },
+
+        onAfterAjaxRequest: function() {
+            // hide the load screen
+            $("#load-screen").hide();
         }
-    });
+
+    },
+
+
+    buildList: function(json_data) {
     
-}
+        // hide the list so we can fadein later
+        $("#items").hide();
+
+        // clear the old list
+        $("#items").children().remove("li");
+
+        // get item template so we have to acces it only once, saving on time
+        var templates = {
+            folder: $("#items-template li.folder").first(),
+            file: $("#items-template li.file").first()
+        };
+
+        for (var i = 0; i < json_data.length; i++) {
+
+            var data = json_data[i];
+
+            // generate new item from template
+            var $new_item = $(templates[data.type].clone());
+            
+            $new_item.attr({
+                "id": data.item_id,
+                "data-type": data.type,
+                "data-url": data.url
+            });
+            
+            $new_item.find(".title").html(data.title);
+            $new_item.find(".date").html(data.last_update_formated);
+            $new_item.find(".format").html(data.ad_type);
+
+            $("#items").append($new_item);
+
+        }
+
+        // fire the event, signaling the build process is done
+        $.event.trigger("listBuilt");
+
+    },
+
+
+
+    // wrapper function for ajax GET requests
+    getData: function(url, data, successCallback, errorCallback) {
+  
+        $.event.trigger("beforeAjaxRequest");
+
+        // set the default format
+        data = (data === undefined ? {} : data);
+        data.format = (data.format !== undefined ? data.format : ADXP.config.response_format);
+        data.date_format = (data.date_format !== undefined ? data.date_format : ADXP.config.date_format);
+
+
+        $.ajax({
+            url: url,
+            type: "GET",
+            data: data,
+            success: function(response) {
+
+                $.event.trigger("afterAjaxRequest");
+
+                if (response.error !== undefined && errorCallback !== undefined)
+                    errorCallback(response);
+
+                else if (response.error !== undefined)
+                    alert(response.error);
+
+                else if (successCallback !== undefined)
+                    successCallback(response);
+
+            },
+
+            error: function(xhr, status, error_thrown) {
+                $.event.trigger("afterAjaxRequest");
+                alert(error_thrown);
+            }
+        });
+
+    }
+};
+
+
 
 // the constructor - kicks things off
 (function() {
@@ -194,7 +253,7 @@ ADXP.getData = function(url, data, successCallback, errorCallback) {
    /*
     *  start app - load the root items and build list
     */
-   
+
    ADXP.getData(ADXP.config.base_url+"items/0/children", {}, ADXP.buildList);
    
-});
+})();

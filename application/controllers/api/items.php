@@ -41,7 +41,7 @@ class Items extends REST_Controller {
         if ($item_id !== null && $sub_action == "children")
             $this->getChildren($item_id);
         
-        else if ($item_id !== null)
+        else if ($item_id !== null && $item_id !== "index")
             $this->getItem($item_id);
         
         // no parameters - show the root!

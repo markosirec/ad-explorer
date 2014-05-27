@@ -1,17 +1,3 @@
-/* Avenir */
-@font-face {
-    font-family: 'Avenir';
-    src: url(http://www.celtra.com/sites/default/themes/celtra/fonts/AvenirNextLTPro-Regular.woff);
-    font-weight: normal;
-}
-
-@font-face {
-    font-family: 'Avenir Bold';
-    src: url(http://www.celtra.com/sites/default/themes/celtra/fonts/AvenirNextLTPro-Bold.woff);
-    font-weight: normal;
-}
-
-
 html, body {
     margin: 0;
     padding: 0;
@@ -33,7 +19,7 @@ body {
 
 #header {
     z-index: 5000;
-    height: 70px;
+    height: 40px;
     width: 100%;
     overflow: hidden;
     position: fixed;
@@ -55,19 +41,18 @@ body {
 }
 
 #refresh-button {
-    padding: 23px 20px 20px 20px;
-    margin: 14px;
-    -webkit-mask-size: 40px;
-    background: url('../images/refresh.png') no-repeat top left;
+    padding: 20px 30px 20px 20px;
+    /* use a background image instead of a webkit mask because android has a bug
+    when showing masks in a fixed container. bummer ;( */
+    background: url('../images/refresh.png') no-repeat center center;
 }
 
 #back-button {
-    padding: 23px 20px 17px 20px;
-    width: 40px;
-    height: 40px;
-    margin: 14px;
-    
-
+    padding: 17px 30px 10px 30px;
+    background: url('../images/back.png') no-repeat center left;
+    font-size: 0.5em;
+    color: #999999;
+    margin-left: 14px;
 }
 
 #back-button {
@@ -80,18 +65,22 @@ body {
 
 #items {
     list-style-type:none;
-    padding: 70px 0 0 0;
+    padding: 40px 0 0 0;
     margin: 0;
 }
 
 #items li {
-    background: #d9dadc;
-    background: -webkit-gradient(linear, left top, right bottom, from(#725dba), to(#87509a)); /* for webkit browsers */
-    background: -moz-linear-gradient(top,  #ee63a4,  #cc558e); /* for firefox 3.6+ */
-    padding: 30px 20px 24px 20px;
-    border-bottom: 1px solid #C1BBCE;
+    background: #87509a;
+    background: -webkit-gradient(linear, left top, right bottom, from(#725dba), to(#87509a));
+    padding: 25px 20px 24px 20px;
+    border-bottom: 2px solid #C1BBCE;
     color: #EEEEEE;
     font-weight: bold;
+}
+
+#items li:hover {
+    background: #d21e2b;
+    background: -webkit-gradient(linear, left top, right bottom, from(#a73a6a), to(#d21e2b));
 }
 
 #items .icon {
@@ -127,4 +116,22 @@ body {
 
 #items .file .icon {
     -webkit-mask-image: url('../images/document28.png');
+}
+
+
+#loading-screen {
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    margin-top: -50px;
+    margin-left: -85px;
+    width: 170px;
+    height: 100px;
+    background-color: #dddddd;
+    border-radius: 5px;
+    text-align: center;
+    font-size: 2em;
+    line-height: 100px;
+    opacity: 0.5;
+    display: none;
 }
