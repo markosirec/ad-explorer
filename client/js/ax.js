@@ -1,5 +1,5 @@
 // create the app namespace/main object
-var ADXP = {
+var AX = {
 
     // config object - here we could also store the urls for the ajax requests if needed, etc.
     config: {
@@ -66,8 +66,8 @@ var ADXP = {
 
         // set the default format
         data = (data === undefined ? {} : data);
-        data.format = (data.format !== undefined ? data.format : ADXP.config.response_format);
-        data.date_format = (data.date_format !== undefined ? data.date_format : ADXP.config.date_format);
+        data.format = (data.format !== undefined ? data.format : AX.config.response_format);
+        data.date_format = (data.date_format !== undefined ? data.date_format : AX.config.date_format);
 
         $.ajax({
             url: url,
@@ -114,13 +114,13 @@ var ADXP = {
     registerEventListeners: function() {  
    
         // our default event for when a new list is built
-        $(document).on("listBuilt", ADXP.event_handlers.onListBuilt);
+        $(document).on("listBuilt", AX.event_handlers.onListBuilt);
 
         // before an ajax request
-        $(document).on("beforeAjaxRequest", ADXP.event_handlers.onBeforeAjaxRequest);
+        $(document).on("beforeAjaxRequest", AX.event_handlers.onBeforeAjaxRequest);
 
         // after ajax request
-        $(document).on("afterAjaxRequest", ADXP.event_handlers.onAfterAjaxRequest);
+        $(document).on("afterAjaxRequest", AX.event_handlers.onAfterAjaxRequest);
 
 
         /* the list mouse/touch event
@@ -132,7 +132,7 @@ var ADXP = {
         
         $("#items").on("touchend", function(event) {
             if (!dragging)
-                ADXP.event_handlers.onListTouch(event);
+                AX.event_handlers.onListTouch(event);
         });
         
         $("#items").on("touchmove", function(){
@@ -144,10 +144,10 @@ var ADXP = {
         });
 
         // on back button touch
-        $("#back-button").on("touchend", ADXP.event_handlers.onBack);
+        $("#back-button").on("touchend", AX.event_handlers.onBack);
 
         // on refresh button touch
-        $("#refresh-button").on("touchend", ADXP.event_handlers.onRefresh);
+        $("#refresh-button").on("touchend", AX.event_handlers.onRefresh);
 
     },
     
@@ -195,17 +195,17 @@ var ADXP = {
             else {
                 
                 // add data to the call stack
-                ADXP.call_stack.push({
+                AX.call_stack.push({
                     id: parseInt($list_item.attr("id")), 
                     title: $list_item.find(".title").first().html()
                 });
 
-                $("#back-button").html(" .. / "+ADXP.call_stack[ADXP.call_stack.length-1].title);
+                $("#back-button").html(" .. / "+AX.call_stack[AX.call_stack.length-1].title);
                 
-                ADXP.getData(
-                    ADXP.config.base_url+"items/"+$list_item.attr("id")+"/children", 
+                AX.getData(
+                    AX.config.base_url+"items/"+$list_item.attr("id")+"/children", 
                     {}, 
-                    ADXP.buildList
+                    AX.buildList
                 );
             }
 
@@ -215,13 +215,13 @@ var ADXP = {
         onBack: function() {
             
             // remove last array item from the call stack
-            ADXP.call_stack.pop();
+            AX.call_stack.pop();
             
             // get index of last element
-            var index = ADXP.call_stack.length-1; 
+            var index = AX.call_stack.length-1; 
             
             // get folder title
-            var title = ADXP.call_stack[index].title;
+            var title = AX.call_stack[index].title;
             
             // show folder title
             if (title != "")
@@ -231,19 +231,19 @@ var ADXP = {
             else
                 $("#back-button").html("");
             
-            ADXP.getData(
-                ADXP.config.base_url+"items/"+ADXP.call_stack[index].id+"/children", 
+            AX.getData(
+                AX.config.base_url+"items/"+AX.call_stack[index].id+"/children", 
                 {}, 
-                ADXP.buildList
+                AX.buildList
             );
         },
 
         // when the user presses the refresh button, load the current list children
         onRefresh: function() {
-            ADXP.getData(
-                ADXP.config.base_url+"items/"+ADXP.call_stack[ADXP.call_stack.length-1].id+"/children", 
+            AX.getData(
+                AX.config.base_url+"items/"+AX.call_stack[AX.call_stack.length-1].id+"/children", 
                 {}, 
-                ADXP.buildList
+                AX.buildList
             );
         },
 
@@ -254,7 +254,7 @@ var ADXP = {
             $("#items").fadeIn();
 
             // show/hide back button
-            if (ADXP.call_stack[ADXP.call_stack.length-1].id !== 0)
+            if (AX.call_stack[AX.call_stack.length-1].id !== 0)
                 $("#back-button").show();
 
             else
@@ -280,9 +280,9 @@ var ADXP = {
 // yeah baby, let's kick things off
 (function() {
    
-   ADXP.registerEventListeners();
+   AX.registerEventListeners();
 
    //start app - load the root items and build list
-   ADXP.getData(ADXP.config.base_url+"items/0/children", {}, ADXP.buildList);
+   AX.getData(AX.config.base_url+"items/0/children", {}, AX.buildList);
    
 })();

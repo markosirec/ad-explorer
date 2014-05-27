@@ -35,7 +35,7 @@ body {
 }
 
 #refresh-button {
-    padding: 20px 30px 20px 20px;
+    padding: 20px 20px 20px 20px;
     float: right;
     
     /* use a background image instead of a webkit mask because android has a bug
@@ -48,7 +48,7 @@ body {
     background: url('../images/back.png') no-repeat left center;
     font-size: 0.4em;
     color: #999999;
-    margin-left: 14px;
+    margin-left: 6px;
     margin-top: 3px;
     min-height: 13px;
     float: left;
@@ -60,11 +60,13 @@ body {
     position: absolute;
     left: 50%;
     margin-left: -26px;
-    width: 52px;
-    margin-top: 12px;
+    width: 30px;
+    margin-top: 7px;
     color: #999999;
-    font-size: 0.6em;
-    letter-spacing: 4px;
+    font-size: 1em;
+    letter-spacing: -3px;
+    text-shadow: -1px 0px 0px rgba(255, 255, 255, 1);
+    padding-left: 16px;
 }
 
 #items {
