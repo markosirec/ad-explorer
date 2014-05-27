@@ -1,7 +1,5 @@
 <?php if ( ! defined('BASEPATH')) exit('No direct script access allowed');
 
-
-
 /**
 * 
 * RESTful controller for the items resource. 
@@ -39,6 +37,10 @@ class Items extends MY_REST_Controller {
      */
     
     public function getAction($item_id = null, $sub_action = null) {
+        
+        // if test call, go for it!
+        if ($item_id == "tests")
+            $this->tests();
         
         if ($item_id !== null && $sub_action == "children")
             $this->getChildren($item_id);
@@ -149,5 +151,38 @@ class Items extends MY_REST_Controller {
         
     }
     
+    
+    
+    
+    
+    /**
+     * 
+     * Automated tests for this controller.
+     * CI makes it practically impossible to access constrollers outside the framework,
+     * therefore forcing you to call controller methods from here.
+     * 
+     */
+    
+    public function tests() {
+        
+        /* here we could make a check if the ENVIRONMENT is development, 
+         * or make an IP check, etc. The url is public after all. 
+         * But for now, lets not complicate too much
+         */
+        
+        $this->load->library('unit_test');
+        
+        // run a bunch of tests on models
+        $test = $this->Items_mdl->getItemsByParentId();
+        echo $this->unit->run($test, "is_object", "Items_mdl->getItemsByParentId()");
+        
+        $test = $this->Items_mdl->getItemsByParentId(false);
+        echo $this->unit->run($test, "is_object", "Items_mdl->getItemsByParentId(false)");
+        
+        $test = $this->Items_mdl->getItemsByParentId(0, "test", "123", "fsfs"); 
+        echo $this->unit->run($test, "is_object", "Items_mdl->getItemsByParentId(..) with wrong order by and date_format parameters");
+        
+        exit();
+    }
     
 }

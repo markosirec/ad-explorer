@@ -159,9 +159,9 @@ var AX = {
 
             // find item 
             var counter = 0,
-                stop = false,
-                $event_items = $(event.target),
-                $list_item;
+            stop = false,
+            $event_items = $(event.target),
+            $list_item;
             
             // go max 8 levels deep and find the LI (it has the id of the item) 
             // the counter limit is implemented in case of errors, the loop doesn't go on forever
@@ -203,10 +203,10 @@ var AX = {
                 $("#back-button").html(" .. / "+AX.call_stack[AX.call_stack.length-1].title);
                 
                 AX.getData(
-                    AX.config.base_url+"items/"+$list_item.attr("id")+"/children", 
-                    {}, 
-                    AX.buildList
-                );
+                AX.config.base_url+"items/"+$list_item.attr("id")+"/children", 
+                {}, 
+                AX.buildList
+            );
             }
 
         },
@@ -232,19 +232,19 @@ var AX = {
                 $("#back-button").html("");
             
             AX.getData(
-                AX.config.base_url+"items/"+AX.call_stack[index].id+"/children", 
-                {}, 
-                AX.buildList
-            );
+            AX.config.base_url+"items/"+AX.call_stack[index].id+"/children", 
+            {}, 
+            AX.buildList
+        );
         },
 
         // when the user presses the refresh button, load the current list children
         onRefresh: function() {
             AX.getData(
-                AX.config.base_url+"items/"+AX.call_stack[AX.call_stack.length-1].id+"/children", 
-                {}, 
-                AX.buildList
-            );
+            AX.config.base_url+"items/"+AX.call_stack[AX.call_stack.length-1].id+"/children", 
+            {}, 
+            AX.buildList
+        );
         },
 
         // when a new list is built, this handler is called
@@ -277,12 +277,12 @@ var AX = {
 };
 
 
+
 // yeah baby, let's kick things off
 (function() {
-   
-   AX.registerEventListeners();
-
-   //start app - load the root items and build list
-   AX.getData(AX.config.base_url+"items/0/children", {}, AX.buildList);
+    
+    //start app - load the root items and build list
+    AX.registerEventListeners();
+    AX.getData(AX.config.base_url+"items/0/children", {}, AX.buildList);
    
 })();

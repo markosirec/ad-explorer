@@ -43,7 +43,7 @@ class Items_mdl extends CI_Model {
         $this->db->where("items.parent_id", $parent_id);
         $this->db->where("items.deleted", "false");
         
-        if (!is_bool($order_by) && !is_bool($order_direction))
+        if (!is_bool($order_by) && !is_bool($order_direction) && (strtoupper($order_direction) == "ASC" || strtoupper($order_direction) == "DESC"))
             $this->db->order_by($order_by, $order_direction);
         
         // show folders on top, after that order by title

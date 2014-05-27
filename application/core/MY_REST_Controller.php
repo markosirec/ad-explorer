@@ -2,6 +2,14 @@
 
 require APPPATH.'/libraries/REST_Controller.php';
 
+/**
+* 
+* Our own Controller, which extends the REST_Controller.
+* A small part has been changed and some new methods have been added to help the child controllers
+* 
+* @author Marko Širec
+*/
+
 class MY_REST_Controller extends REST_Controller {
     
     // overriden method from the REST controller library - check the comments below
