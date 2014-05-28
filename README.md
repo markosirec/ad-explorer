@@ -111,6 +111,14 @@ To run a couple of automated tests on the server app, open the URI /api/items/te
 The frontend client has been tested on Samsung Galaxy S3, Samsung Galaxy mini and in Xcodes iPhone and iPad emulator. I sure would wish to have more devices with me, but alas it is what it is... 
 
 
+Know issues
+=========
+
+Samsung Galaxy S3 with Android 4.3 has some problems with the top header (position fixed). It sometimes reacts to touches kind of weird breaking the back button text. But only if you scroll a little so the status bar is seen. It is very very random.
+
+There is also an Android bug with webkit masks in an element with position fixed.They don't work at all. This is the reason the refresh and back button icons are regular pngs instead of sharper masks. Bummer...
+
+
 Choices
 =========
 
