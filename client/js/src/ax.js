@@ -261,7 +261,7 @@ var AX = {
         onListBuilt: function() {
 
             // scroll to top so the screen is not somewhere in the middle where it left off
-            window.scrollTo(0, 0);
+            //window.scrollTo(0, 0);
 
             // slightly animate the list
             $("#items").fadeIn("fast");
