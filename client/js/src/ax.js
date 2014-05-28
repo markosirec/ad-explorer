@@ -3,7 +3,7 @@ var AX = {
 
     // config object - here we could also store the urls for the ajax requests if needed, etc.
     config: {
-        base_url: "/api/",
+        base_url: "http://konverzija.com/ad-explorer/index.php/api/",
         response_format: "json",
         date_format: "%m/%d/%Y %H:%i"
     },
@@ -72,6 +72,7 @@ var AX = {
         $.ajax({
             url: url,
             type: "GET",
+            dataType: 'jsonp',
             data: data,
             success: function(response) {
 
@@ -250,8 +251,11 @@ var AX = {
         // when a new list is built, this handler is called
         onListBuilt: function() {
 
+            // scroll to top so the screen is not somewhere in the middle where it left off
+            window.scrollTo(0, 0);
+
             // slightly animate the list
-            $("#items").fadeIn();
+            $("#items").fadeIn("fast");
 
             // show/hide back button
             if (AX.call_stack[AX.call_stack.length-1].id !== 0)
