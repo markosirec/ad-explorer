@@ -10,6 +10,7 @@ var AX = {
 
 
     // holds the data for the current state (back button functionality)
+    // retrieved in a LIFO order
     call_stack: new Array({
         id: 0,
         title: ""
@@ -195,19 +196,27 @@ var AX = {
             // load folder children and set current folder title
             else {
                 
-                // add data to the call stack
-                AX.call_stack.push({
-                    id: parseInt($list_item.attr("id")), 
-                    title: $list_item.find(".title").first().html()
-                });
+                // check if reload
+                var last_stack_el = AX.call_stack[AX.call_stack.length-1],
+                    new_id = parseInt($list_item.attr("id"));
+                
+                if (last_stack_el.id != new_id) {
+                
+                    // add data to the call stack
+                    AX.call_stack.push({
+                        id: new_id, 
+                        title: $list_item.find(".title").first().html()
+                    });
 
-                $("#back-button").html(" .. / "+AX.call_stack[AX.call_stack.length-1].title);
+                    $("#back-button").html(" .. / "+AX.call_stack[AX.call_stack.length-1].title);
+                    
+                }
                 
                 AX.getData(
-                AX.config.base_url+"items/"+$list_item.attr("id")+"/children", 
-                {}, 
-                AX.buildList
-            );
+                    AX.config.base_url+"items/"+$list_item.attr("id")+"/children", 
+                    {}, 
+                    AX.buildList
+                );
             }
 
         },
@@ -219,33 +228,33 @@ var AX = {
             AX.call_stack.pop();
             
             // get index of last element
-            var index = AX.call_stack.length-1; 
+            var index = AX.call_stack.length - 1; 
             
             // get folder title
             var title = AX.call_stack[index].title;
             
             // show folder title
             if (title != "")
-                $("#back-button").html(" .. / "+title);
+                $("#back-button").html(" .. / " + title);
             
             // don't show folder title if we are in the root
             else
                 $("#back-button").html("");
             
             AX.getData(
-            AX.config.base_url+"items/"+AX.call_stack[index].id+"/children", 
-            {}, 
-            AX.buildList
-        );
+                AX.config.base_url+"items/"+AX.call_stack[index].id+"/children", 
+                {}, 
+                AX.buildList
+            );
         },
 
         // when the user presses the refresh button, load the current list children
         onRefresh: function() {
             AX.getData(
-            AX.config.base_url+"items/"+AX.call_stack[AX.call_stack.length-1].id+"/children", 
-            {}, 
-            AX.buildList
-        );
+                AX.config.base_url+"items/"+AX.call_stack[AX.call_stack.length-1].id+"/children", 
+                {}, 
+                AX.buildList
+            );
         },
 
         // when a new list is built, this handler is called
