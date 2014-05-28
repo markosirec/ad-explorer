@@ -15,7 +15,7 @@ Usage
 ----
 
 To run the client app, simply open: *http://konverzija.com/ad-explorer/client* with your mobile device or an emulator.
-The client will fetch the data by default from the test server. The app will not work in your browser unless you enable emulation in Chrome.
+The client will fetch the data by default from the test server. The app will not work in a desktop browser unless you enable emulation in Chrome.
 
 API URIs
 ----
@@ -24,7 +24,7 @@ API URIs
  - */api/items/2* - get the item with the item_id 2
  - */api/items/2/children* - get all the children of an item (a folder in this case)
 
-** *Please note**, if you have mod_rewrite installed and running, then your API URIs are going to be without index.php (/api/items). Otherwise, your RESTful URIs will be something like /index.php/api/items . The later goes also for fetching data from the test server. Here is an example:
+**Please note** - if you have mod_rewrite installed and running, then your API URIs are going to be without index.php (/api/items). Otherwise, your RESTful URIs will be something like /index.php/api/items . The later goes also for fetching data from the test server. Here is an example:
 
 http://konverzija.com/ad-explorer/index.php/api/items
 
@@ -62,7 +62,7 @@ What's with all these folders in /application?
 
 Yes, CodeIgniter (as any serious framework), creates a lot of files. Just to make things easier for the reviewer, I will pinpoint the main files where our own logic resides in:
 
-Controllers: 
+**Controllers:** 
 
  - /application/controllers/api/items.php 
 (The main Controller class for the items API)
@@ -71,10 +71,10 @@ Controllers:
 (Items extends this class, which features a couple of overrides from the REST Controller which it extends)
 
  - /application/libraries/REST_Controller.php 
-(REST Controller - A library for RESTful requests - made by Phil Sturgeon and Chris Kacerguis)
+(REST Controller - A library for creating RESTful applications - made by Phil Sturgeon and Chris Kacerguis)
 
 
-Models:
+**Models:**
 
  - /application/models/items_mdl
 
@@ -120,13 +120,13 @@ Choices
 
  - CI has been my framework of choice for the last 4 years, therefore development time was small and I got the code deployed pretty fast.
 
- - CI is fairly lightweight and is among the fastest PHP frameworks around. Not THE fastest, but usually in the top 5 according to some blog posts by guys who know more about this than I do.
+ - CI is fairly lightweight and is among the fastest PHP frameworks around. Not THE fastest, but usually in the top 5 according to some blog posts.
 
  - It has been around since 2006 and has strong community support. This framework has been plenty battle tested and survived.
 
  - It also features a bunch of libraries which make your life a lot easier (the testing class for example).
 
- - The MVC design pattern I find to be meaningful and intuitive, the code is clean and organized.
+ - I find the MVC design pattern to be meaningful and intuitive, the code is clean and organized.
 
 If this was a real life application with high traffic and longer development time, would I choose something else? Perhaps! I have not delved into nodeJS yet but I hear good things, especially for creating high volume apps which rely a lot of JavaScript on the client side. This would be an attractive option but I would need to give it more thought and study time.
 
@@ -147,7 +147,7 @@ Well, here I had some thinking to do since there are multiple ways of doing this
 
 */api/items/item-id/4/action/children*
 
-Something like an associative array if you wish. This seemed way to cumbersome so I decided on a design that could be hackable upwards. In the end we are dealing with folders so every time I remove the last part of the URI it should take me one step up the tree. This seemed logical in the end. Yet the URI also has to be short and to the point!
+Like an associative array if you wish. This seemed way to cumbersome so I decided on a design that could be hackable upwards. In the end we are dealing with folders so every time I remove the last part of the URI it should take me one step up the tree. This seemed logical in the end. Yet the URI also has to be short and to the point!
 
 The end result is a URI design like this:
 
