@@ -3,7 +3,7 @@
 -- http://www.phpmyadmin.net
 --
 -- Host: localhost
--- Generation Time: May 27, 2014 at 08:46 PM
+-- Generation Time: May 28, 2014 at 12:43 AM
 -- Server version: 5.5.9
 -- PHP Version: 5.3.6
 
@@ -18,6 +18,51 @@ SET SQL_MODE="NO_AUTO_VALUE_ON_ZERO";
 --
 -- Database: `ad_explorer`
 --
+CREATE DATABASE `ad_explorer` DEFAULT CHARACTER SET utf8 COLLATE utf8_general_ci;
+USE `ad_explorer`;
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `item_ad_types`
+--
+
+CREATE TABLE `item_ad_types` (
+  `ad_type_id` smallint(6) NOT NULL AUTO_INCREMENT,
+  `title` varchar(100) NOT NULL,
+  PRIMARY KEY (`ad_type_id`)
+) ENGINE=InnoDB  DEFAULT CHARSET=utf8 AUTO_INCREMENT=10 ;
+
+--
+-- Dumping data for table `item_ad_types`
+--
+
+INSERT INTO `item_ad_types` VALUES(0, '');
+INSERT INTO `item_ad_types` VALUES(1, 'Premium DR Banner');
+INSERT INTO `item_ad_types` VALUES(2, 'Rich Media');
+INSERT INTO `item_ad_types` VALUES(3, 'Shazam for TV');
+INSERT INTO `item_ad_types` VALUES(4, 'Angry Birds');
+INSERT INTO `item_ad_types` VALUES(5, 'Social Rich Media');
+INSERT INTO `item_ad_types` VALUES(6, 'Video');
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `item_types`
+--
+
+CREATE TABLE `item_types` (
+  `type_id` smallint(6) NOT NULL AUTO_INCREMENT,
+  `title` varchar(50) NOT NULL,
+  PRIMARY KEY (`type_id`)
+) ENGINE=InnoDB  DEFAULT CHARSET=utf8 AUTO_INCREMENT=3 ;
+
+--
+-- Dumping data for table `item_types`
+--
+
+INSERT INTO `item_types` VALUES(1, 'folder');
+INSERT INTO `item_types` VALUES(2, 'file');
 
 -- --------------------------------------------------------
 
@@ -97,46 +142,3 @@ INSERT INTO `items` VALUES(49, 6, 2, 4, 'Special AD 4', 'http://www.celtra.com/'
 INSERT INTO `items` VALUES(50, 6, 2, 5, 'Special AD 5', 'http://www.celtra.com/', '2014-05-27 19:21:52', '2014-05-27 19:21:54', 'false');
 INSERT INTO `items` VALUES(51, 6, 2, 6, 'Special AD 6', 'http://www.celtra.com/', '2014-05-27 19:21:52', '2014-05-27 19:21:54', 'false');
 INSERT INTO `items` VALUES(52, 6, 2, 2, 'Special AD 7', 'http://www.celtra.com/', '2014-05-27 19:21:52', '2014-05-27 19:21:54', 'false');
-
--- --------------------------------------------------------
-
---
--- Table structure for table `item_ad_types`
---
-
-CREATE TABLE `item_ad_types` (
-  `ad_type_id` smallint(6) NOT NULL AUTO_INCREMENT,
-  `title` varchar(100) NOT NULL,
-  PRIMARY KEY (`ad_type_id`)
-) ENGINE=InnoDB  DEFAULT CHARSET=utf8 AUTO_INCREMENT=10 ;
-
---
--- Dumping data for table `item_ad_types`
---
-
-INSERT INTO `item_ad_types` VALUES(0, '');
-INSERT INTO `item_ad_types` VALUES(1, 'Premium DR Banner');
-INSERT INTO `item_ad_types` VALUES(2, 'Rich Media');
-INSERT INTO `item_ad_types` VALUES(3, 'Shazam for TV');
-INSERT INTO `item_ad_types` VALUES(4, 'Angry Birds');
-INSERT INTO `item_ad_types` VALUES(5, 'Social Rich Media');
-INSERT INTO `item_ad_types` VALUES(6, 'Video');
-
--- --------------------------------------------------------
-
---
--- Table structure for table `item_types`
---
-
-CREATE TABLE `item_types` (
-  `type_id` smallint(6) NOT NULL AUTO_INCREMENT,
-  `title` varchar(50) NOT NULL,
-  PRIMARY KEY (`type_id`)
-) ENGINE=InnoDB  DEFAULT CHARSET=utf8 AUTO_INCREMENT=3 ;
-
---
--- Dumping data for table `item_types`
---
-
-INSERT INTO `item_types` VALUES(1, 'folder');
-INSERT INTO `item_types` VALUES(2, 'file');
