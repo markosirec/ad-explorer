@@ -228,14 +228,14 @@ var AX = {
             AX.call_stack.pop();
             
             // get index of last element
-            var index = AX.call_stack.length - 1; 
+            var index = AX.call_stack.length-1; 
             
             // get folder title
             var title = AX.call_stack[index].title;
             
             // show folder title
             if (title != "")
-                $("#back-button").html(" .. / " + title);
+                $("#back-button").html(" .. / "+title);
             
             // don't show folder title if we are in the root
             else
