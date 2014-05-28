@@ -24,7 +24,7 @@ API URIs
  - */api/items/2* - get the item with the item_id 2
  - */api/items/2/children* - get all the children of an item (a folder in this case)
 
-**Please note in case you want to copy the server side app to your server ** - if you have mod_rewrite installed and running, then your API URIs are going to be without index.php (/api/items). Otherwise, your RESTful URIs will be something like /index.php/api/items . The later goes also for fetching data from the test server. Here is an example:
+**Please note in case you want to copy the server side app to your server** - if you have mod_rewrite installed and running, then your API URIs are going to be without index.php (/api/items). Otherwise, your RESTful URIs will be something like /index.php/api/items . The later goes also for fetching data from the test server. Here is an example:
 
 http://konverzija.com/ad-explorer/index.php/api/items
 
