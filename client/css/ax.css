@@ -26,9 +26,10 @@ body {
     position: fixed;
     top: 0px;
     left: 0px;
-    background-color: #f4f6f7;
+    background-color: #F8F8F8;
     box-shadow: 0px 0px 10px #2E2E2E;
     font-size: 2em;
+    text-align:center;
 }
 
 #header div {
@@ -38,6 +39,7 @@ body {
 #refresh-button {
     padding: 20px 20px 20px 20px;
     float: right;
+    z-index: 100;
     
     /* use a background image instead of a webkit mask because android has a bug
     when showing masks in a fixed container. bummer ;( the masks look so much better... */
@@ -55,19 +57,23 @@ body {
     float: left;
     display: none;
     max-width: 110px;
+    z-index: 100;
 }
 
 #logo {
-    position: absolute;
+    /*position: absolute;
     left: 50%;
-    margin-left: -26px;
-    width: 30px;
+    margin-left: -26px;*/
+    position: absolute;
+    width:100%;
+    text-align:center;
+    /*width: 30px;*/
     margin-top: 7px;
     color: #999999;
     font-size: 1em;
     letter-spacing: -3px;
     text-shadow: -1px 0px 0px rgba(255, 255, 255, 1);
-    padding-left: 16px;
+    z-index: -1;
 }
 
 #items {
