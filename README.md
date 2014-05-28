@@ -24,7 +24,7 @@ API URIs
  - */api/items/2* - get the item with the item_id 2
  - */api/items/2/children* - get all the children of an item (a folder in this case)
 
-**Please note** - if you have mod_rewrite installed and running, then your API URIs are going to be without index.php (/api/items). Otherwise, your RESTful URIs will be something like /index.php/api/items . The later goes also for fetching data from the test server. Here is an example:
+**Please note in case you want to copy the server side app to your server ** - if you have mod_rewrite installed and running, then your API URIs are going to be without index.php (/api/items). Otherwise, your RESTful URIs will be something like /index.php/api/items . The later goes also for fetching data from the test server. Here is an example:
 
 http://konverzija.com/ad-explorer/index.php/api/items
 
@@ -135,6 +135,8 @@ Choices
  - It also features a bunch of libraries which make your life a lot easier (the testing class for example).
 
  - I find the MVC design pattern to be meaningful and intuitive, the code is clean and organized.
+
+ - The framework supports database abstraction (ActiveRecord). The queries are generated from method calls, therefore switching to another database is easier in the long run. 
 
 If this was a real life application with high traffic and longer development time, would I choose something else? Perhaps! I have not delved into nodeJS yet but I hear good things, especially for creating high volume apps which rely a lot of JavaScript on the client side. This would be an attractive option but I would need to give it more thought and study time.
 
