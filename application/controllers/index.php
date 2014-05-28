@@ -7,8 +7,7 @@ class Index extends CI_Controller {
     }
 
     public function index() {
-        var_dump($this->db);
-        echo 1;
+        show_404();
     }
     
     

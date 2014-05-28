@@ -1,4 +1,4 @@
-Ad Explorer
+Ad Explorer (AX)
 =========
 
 A simple mobile web app for showing ads and folders. **Beware** - this is not a "real life" application, it's just an exercise. The data in the app is purely fictional.
@@ -151,6 +151,6 @@ The end result is a URI design like:
 
 One option was to keep adding the ids as we move deeper into the structure, but I decided it would be too complicated and ugly to have something like this:
 
- - */api/items/21/40/62/34/children
+ - */api/items/21/40/62/34/children*
 
 I could go either way and in the end I chose the simplest design.
